@@ -2,15 +2,29 @@
 <table>
     <thead>
         <tr>
-            <th>Search Term</th>
-            <th>Adress</th>
+            <th style="width: 10%;">Adress</th>
+            <th >Search Term</th>
         </tr>
     <thead>
+    
     <tbody>
-        <% @searches.each do |search| %>
+        <% @recordsByIp.each do |search| %>
+        
             <tr>
-                <th><%= search.term %></th>
-                <th><%= search.ip_address %></th>
+                <th style="width: 10%;">
+                    <%= search.ip_address %>
+                </th>
+                      <% begin
+                        array_of_hashes = JSON.parse(search.terms)
+                        array_of_hashes.slice(0, 3)
+                        rescue JSON::ParserError => e
+                        array_of_hashes = []
+                        end %>
+                    <%= array_of_hashes.each do |hash| %>
+                        <th >Term: <%=hash['term']%></th>
+                        <th >Count: <%=hash['count']%>, </th>
+                    <%end%>
+                
             </tr>
         <%end%>
     </tbody>

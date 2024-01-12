@@ -6,10 +6,9 @@
         <%= form.text_field :term, id: 'search-input', placeholder: "Start typing here . . ." %>
         
     <%end%>
-    
-    <!--<input type="text" id="search-input" placeholder="Start typing here ..."> -->
     <ul id="search-results" style="text-align: left"></ul>
 </div>
+<%= link_to 'Go to Searches', searches_path, style: 'background-color: gray; color: white; padding: 10px; margin: 5px; text-align: left; text-decoration: none; font-size: 20px;' %>
 
 <h1>Articles</h2>
 <% @articles.each do |article| %>
@@ -33,11 +32,6 @@
             : fetchSearchResults(searchInput.value)
         })
         //record search term
-        //searchInput.addEventListener('input', function() {
-        //    searchTimer = setTimeout( function() {
-        //        saveSearchTerm(searchInput.value)
-        //    }, 1000)
-        //})
         searchInput.addEventListener('keydown', function() {
             clearTimeout(searchTimer)
         })

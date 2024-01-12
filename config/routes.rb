@@ -6,5 +6,4 @@ Rails.application.routes.draw do
   resources :searches, only: [:new, :create, :index]
   resources :articles, only: [:index]
   get 'articles/search', to: 'articles#search'
-  get 'analysis', to: 'searches#analysis'
 end
