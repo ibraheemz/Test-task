@@ -1,10 +1,64 @@
 <div style="text-align: center">
     <h2>Search</h2>
+    
     <%= form_with url: searches_path, local: true do |form| %>
-        <%= form.text_field :term, placeholder: "Start typing here . . ." %>
-        <%= form.submit "Search" %>
+        <%= form.lable :term, "Search"%>
+        <%= form.text_field :term, id: 'search-input', placeholder: "Start typing here . . ." %>
     <%end%>
+    
+    <!--<input type="text" id="search-input" placeholder="Start typing here ..."> -->
+    <ul id="search-results"></ul>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('search-input')
+        const searchResults = document.getElementById('search-results')
+
+        let searchTimer;
+
+        //fetch results on input
+        searchInput.addEventListener('input', function() {
+                fetchSearchResults(searchInput.value)
+        })
+        //record search term
+        searchInput.addEventListener('input', function() {
+            searchTimer = setTimeout( function() {
+                saveSearchTerm(searchInput.value)
+            }, 1000)
+        })
+        
+        function saveSearchTerm(term) {
+            fetch(`/searches`)
+        }
+
+        function fetchSearchResults(term) {
+            fetch(`/searches?term=${encodeURIComponent(term)}`)
+            .then(response => response.json())
+            .then(data => displaySearchResults(data))
+        }
+
+        function displaySearchResults(data) {
+            searchResults.innerHTML = ''
+            data.foreach(item => {
+                const li = document.createElement('li')
+                const h3 = document.createElement('h3')
+                const p = document.createElement('p')
+
+                h3.textContent = item.title
+                p.textContent = item.body
+
+                li.appendChild(h3)
+                li.appendChild(p)
+
+                searchResults.appendChild(li)
+            })
+        }
+
+    })
+</script>
+
+
 
 <h1>Articles</h2>
 <% @articles.each do |article| %>

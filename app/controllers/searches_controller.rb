@@ -2,6 +2,12 @@ class SearchesController < ApplicationController
 
     # before_action :set_search, only: [:create]
 
+    def index
+        @articles = Article.where("title Like ? OR body LIKE ?", "%#{params[:term]}%", "%#{params[:term]}%")
+        raise "Debug info: #{@articles}"
+        render json: @articles
+    end
+
     def create 
         term = params[:search][:term]
         ip_address = request.remote_ip
