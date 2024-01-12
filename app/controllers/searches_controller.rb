@@ -1,28 +1,28 @@
 class SearchesController < ApplicationController
 
-    # before_action :set_search, only: [:create]
+    def create
+        ip_address = request.remote_ip
+        @search = Search.new(search_params.merge(ip_address: ip_address))
 
-    def index
-        @articles = Article.where("title Like ? OR body LIKE ?", "%#{params[:term]}%", "%#{params[:term]}%")
-        raise "Debug info: #{@articles}"
-        render json: @articles
+        respond_to do |format|
+            if @search.save
+                format.json {render json: @search, status: :created}
+            else
+                format.json {render json: @search.errors, status: :unprocessable_entity}
+            end
+        end
     end
 
-    def create 
-        term = params[:search][:term]
-        ip_address = request.remote_ip
-        # Search.create(term: term, ip_address: ip_address)
-        @user = User.find_or_create_by(ip_address: request.remote_ip)
-        @user.searches.create(term: term)
-
+    def analysis
+        @recordsByIp = Search.group(:ip_address, :term).select('ip_address, COUNT(DISTINCT term) as term_count')
+        render json: @recordsByIp
     end
 
     
 
     private
-
-    # def set_search
-    #     @search = Search.find_or_create_by(ip_address: request.remote_ip)
-    # end
+    def search_params
+        params.require(:search).permit(:term)
+    end
 
 end

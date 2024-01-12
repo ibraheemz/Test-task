@@ -2,13 +2,22 @@
     <h2>Search</h2>
     
     <%= form_with url: searches_path, local: true do |form| %>
-        <%= form.lable :term, "Search"%>
+        <%= form.label :term, "Search"%>
         <%= form.text_field :term, id: 'search-input', placeholder: "Start typing here . . ." %>
+        
     <%end%>
     
     <!--<input type="text" id="search-input" placeholder="Start typing here ..."> -->
-    <ul id="search-results"></ul>
+    <ul id="search-results" style="text-align: left"></ul>
 </div>
+
+<h1>Articles</h2>
+<% @articles.each do |article| %>
+        <div style="border: 2px solid gray; padding: 3px; margin:8px; ">
+            <h3><%= article.title %></h4>
+            <p style="font-style: italic"><%= truncate(article.body, length: 100, seperator: "", omission: "...") %></p>
+        </div>
+<%end%>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -19,28 +28,50 @@
 
         //fetch results on input
         searchInput.addEventListener('input', function() {
-                fetchSearchResults(searchInput.value)
+            !searchInput.value 
+            ? searchResults.innerHTML = ''
+            : fetchSearchResults(searchInput.value)
         })
         //record search term
-        searchInput.addEventListener('input', function() {
+        //searchInput.addEventListener('input', function() {
+        //    searchTimer = setTimeout( function() {
+        //        saveSearchTerm(searchInput.value)
+        //    }, 1000)
+        //})
+        searchInput.addEventListener('keydown', function() {
+            clearTimeout(searchTimer)
+        })
+        searchInput.addEventListener('keyup', function() {
+            clearTimeout(searchTimer)
             searchTimer = setTimeout( function() {
                 saveSearchTerm(searchInput.value)
-            }, 1000)
+            }, 1200)
         })
         
         function saveSearchTerm(term) {
-            fetch(`/searches`)
+            fetch('/searches', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ search: { term: term } })
+            })
+            .then(response => response.json)
+            .then(data => console.log("Search term saved: ", data))
+            .catch(err => console.log("Search error: ", err))
         }
 
         function fetchSearchResults(term) {
-            fetch(`/searches?term=${encodeURIComponent(term)}`)
+            term.trim().length &&
+            fetch(`/articles/search?term=${encodeURIComponent(term)}`)
             .then(response => response.json())
             .then(data => displaySearchResults(data))
         }
 
         function displaySearchResults(data) {
             searchResults.innerHTML = ''
-            data.foreach(item => {
+            data.forEach(item => {
                 const li = document.createElement('li')
                 const h3 = document.createElement('h3')
                 const p = document.createElement('p')
@@ -60,10 +91,3 @@
 
 
 
-<h1>Articles</h2>
-<% @articles.each do |article| %>
-    <div style="border: 2px solid gray; padding: 3px; margin:8px; ">
-        <h4><%= article.title %></h4>
-        <p style="font-style: italic"><%= truncate(article.body, length: 100, seperator: "", omission: "...") %></p>
-    </div>
-<%end%>
