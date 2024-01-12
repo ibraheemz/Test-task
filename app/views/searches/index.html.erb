@@ -1,0 +1,17 @@
+<h1>Search Analytics</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Search Term</th>
+            <th>Adress</th>
+        </tr>
+    <thead>
+    <tbody>
+        <% @searches.each do |search| %>
+            <tr>
+                <th><%= search.term %></th>
+                <th><%= search.ip_address %></th>
+            </tr>
+        <%end%>
+    </tbody>
+</table>
