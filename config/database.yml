@@ -17,8 +17,4 @@ test:
   password: <%= ENV.fetch("DATABASE_PASSWORD") %>
   host: localhost
 production:
-  <<: *default
   url: <%= ENV['DATABASE_URL'] %>
-  # database: Test_task_production
-  # username: <%= ENV.fetch("DATABASE_USERNAME") %>
-  # password: <%= ENV.fetch("DATABASE_PASSWORD") %>
