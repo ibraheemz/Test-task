@@ -1,3 +1,5 @@
+<%= javascript_include_tag 'search' %>
+
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -57,96 +59,24 @@
         font-style: italic;
     }
 </style>
-    <div class="container">
-        <h2>Search</h2>
 
-        <%= form_with url: searches_path, local: true do |form| %>
-            <%= form.label :term, "Search" %>
-            <%= form.text_field :term, id: 'search-input', placeholder: "Start typing here . . ." %>
-        <% end %>
+<div class="container">
+    <h2>Search</h2>
 
-        <ul id="search-results"></ul>
-    </div>
-
-    <%= link_to 'Most searched keywords', searches_path, class: 'button' %>
-
-    <h1>Articles</h1>
-    <% @articles.each do |article| %>
-        <div class="article-container">
-            <h3><%= article.title %></h3>
-            <p class="italic"><%= truncate(article.body, length: 100, separator: "", omission: "...") %></p>
-        </div>
+    <%= form_with url: searches_path, local: true do |form| %>
+        <%= form.label :term, "Search" %>
+        <%= form.text_field :term, id: 'search-input', placeholder: "Start typing here . . ." %>
     <% end %>
 
-<script>
-    (function() {
-        window.searchInput = document.getElementById('search-input')
-        window.searchResults = document.getElementById('search-results')
-        window.searchTimer;
-    })()
+    <ul id="search-results"></ul>
+</div>
 
-    //fetch results on input
-    searchInput.addEventListener('input', function() {
-        !searchInput.value 
-        ? searchResults.innerHTML = ''
-        : fetchSearchResults(searchInput.value)
-    })
-    //record search term
-    searchInput.addEventListener('keydown', function() {
-        clearTimeout(window.searchTimer)
-    })
-    searchInput.addEventListener('keyup', function() {
-        clearTimeout(window.searchTimer)
-        window.searchTimer = setTimeout( function() {
-            saveSearchTerm(searchInput.value)
-        }, 1000)
-    })
-    
-    function saveSearchTerm(term) {
-        term.trim().length &&
-        fetch('/searches', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({ search: { term: term } })
-        })
-        .then(response => response.json)
-        .then(data => console.log("Search term saved: ", data))
-        .catch(err => console.log("Search error: ", err))
-    }
+<%= link_to 'Most searched keywords', searches_path, class: 'button' %>
 
-    function fetchSearchResults(term) {
-        term.trim().length &&
-        fetch(`/articles/search?term=${encodeURIComponent(term)}`)
-        .then(response => response.json())
-        .then(data => displaySearchResults(data))
-    }
-
-    function displaySearchResults(data) {
-        searchResults.innerHTML = ''
-        if(!data.length) {
-            const h5 = document.createElement('h5')
-            h5.textContent = "No results found!"
-            searchResults.appendChild(h5)
-        }
-        data.forEach(item => {
-            const li = document.createElement('li')
-            const h3 = document.createElement('h3')
-            const p = document.createElement('p')
-
-            h3.textContent = item.title
-            p.textContent = item.body
-
-            li.appendChild(h3)
-            li.appendChild(p)
-
-            searchResults.appendChild(li)
-        })
-    }
-
-</script>
-
-
-
+<h1>Articles</h1>
+<% @articles.each do |article| %>
+    <div class="article-container">
+        <h3><%= article.title %></h3>
+        <p class="italic"><%= truncate(article.body, length: 100, separator: "", omission: "...") %></p>
+    </div>
+<% end %>

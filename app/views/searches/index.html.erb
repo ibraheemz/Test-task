@@ -31,10 +31,10 @@
             </tr>
         <% @records_trending_trems.each do |hash| %>
             <tr>
-                <td><%= hash['term'] %></td>
+                <td><%= hash[:term] %></td>
                 <td>
-                    <%= hash['count'] %>
-                    <% if hash['count'] && hash['count'].to_i > 1 %>
+                    <%= hash[:count] %>
+                    <% if hash[:count].to_i > 1 %>
                         times
                     <% else %>
                         time
