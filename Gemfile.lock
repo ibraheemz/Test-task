@@ -217,6 +217,7 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap
+  byebug
   capybara
   debug
   importmap-rails
