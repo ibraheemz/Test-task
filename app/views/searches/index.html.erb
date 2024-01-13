@@ -34,7 +34,7 @@
                 <td><%= hash['term'] %></td>
                 <td>
                     <%= hash['count'] %>
-                    <% if hash['count'] > 1 %>
+                    <% if hash['count'] && hash['count'].to_i > 1 %>
                         times
                     <% else %>
                         time
