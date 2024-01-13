@@ -9,8 +9,6 @@
         padding: 8px;
         text-align: center;
         font-size: 24px;
-
-
     }
 
     th {
@@ -36,10 +34,10 @@
                 <td><%= hash['term'] %></td>
                 <td>
                     <%= hash['count'] %>
-                    <% if hash['count'] %>
-                        times, 
+                    <% if hash['count'] > 1 %>
+                        times
                     <% else %>
-                        time, 
+                        time
                     <% end %>
                 </td>
             </tr>
