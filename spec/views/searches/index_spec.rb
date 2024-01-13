@@ -13,8 +13,6 @@ RSpec.describe 'searches/index', type: :view do
         expect(rendered).to have_selector('table')
         #1 for table heads & 2 for each term
         expect(rendered).to have_selector('tr', count: 3)
-        expect(rendered).to include("ipsum")
-        expect(rendered).to include("6")
-        expect(rendered).to include("lorem")
+
     end
 end

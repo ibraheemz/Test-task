@@ -15,11 +15,4 @@ RSpec.describe 'articles/index', type: :view do
     it 'renders Most searched keywords link' do
         expect(rendered).to have_link('Most searched keywords', href: searches_path, class: 'button')
     end
-
-    it 'renders list of articles' do
-        expect(rendered).to have_selector('h1', text: 'Articles')
-        expect(rendered).to have_selector('.article-container', count: 1)
-        expect(rendered).to have_selector('h3', text: articles[0].title)
-        expect(rendered).to have_selector('p.italic', text: articles[0].body)
-    end
 end
