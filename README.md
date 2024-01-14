@@ -70,6 +70,6 @@ To get the app up and running:
 
 Improvements that I wish had more time to do:
 
-+ Javascript, i tried to seperate the Javascript from the Articles view, but it didn't function as expected, would have definitly givin it priority if i had more time  
-+ Using Hotwire, I haven't used it before and I had in mind to try it in this project
-+ Dockerization
++ Javascript, I tried to seperate the Javascript from the Articles view, but it didn't function as expected, would have definitly givin it priority if i had more time.
++ Using Hotwire, I haven't used it before and I had in mind to try it in this project.
++ Dockerization.
