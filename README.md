@@ -14,6 +14,11 @@ a web application built using Ruby on Rails for realtime search with analytics.
 - Ruby on Rails 7.0.8
 - PostgreSQL
 
+## Live
+
+https://limitless-meadow-52181-a6ca164ceb90.herokuapp.com/
+
+
 ## Installation
 
 To get the app up and running:
@@ -64,3 +69,7 @@ To get the app up and running:
 ## Potential Improvement
 
 Improvements that I wish had more time to do:
+
++ Javascript, i tried to seperate the Javascript from the Articles view, but it didn't function as expected, would have definitly givin it priority if i had more time  
++ Using Hotwire, I haven't used it before and I had in mind to try it in this project
++ Dockerization
